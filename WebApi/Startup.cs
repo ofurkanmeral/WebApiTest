@@ -45,6 +45,7 @@ namespace WebApi
                 {
                     option.MigrationsAssembly(Assembly.GetAssembly(typeof(DataContext)).GetName().Name);
                 });
+                //options
             });
 
             //TestBoard
