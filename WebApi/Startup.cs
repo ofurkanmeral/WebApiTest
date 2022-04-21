@@ -1,4 +1,5 @@
 using Core.Repositories;
+using Core.Services;
 using Core.UnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,8 @@ using Microsoft.OpenApi.Models;
 using Repository;
 using Repository.Repositories;
 using Repository.UnitOfWork;
+using Service.Mapping;
+using Service.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +40,7 @@ namespace WebApi
             services.AddControllers();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+            services.AddScoped(typeof(IServices<>), typeof(Service<>));
 
             services.AddDbContext<DataContext>(x =>
             {
@@ -47,6 +50,8 @@ namespace WebApi
                 });
                 //options
             });
+
+            services.AddAutoMapper(typeof(MapProfile));
 
             //TestBoard
            

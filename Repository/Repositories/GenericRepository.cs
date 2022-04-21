@@ -36,12 +36,12 @@ namespace Repository.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public IQueryable<T> GetAll()
         {
             //AsNoTracking track etmek takip etmek anlamına gelir yani diyelim 10 bin kayıt
             //çektin bu 10 bini takip eder performans düşer
-            //return _dbSet.AsNoTracking().AsQueryable();
-            return await _dbSet.ToListAsync();
+            return _dbSet.AsNoTracking().AsQueryable();
+            //return await _dbSet.ToListAsync();
         }
 
         public async Task<T> GetById(int id)

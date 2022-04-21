@@ -12,9 +12,9 @@ namespace Core.Services
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
         IQueryable<T> Where(Expression<Func<T, bool>> expression);
-        IQueryable<T> Any(Expression<Func<T, bool>> expression);
-        Task Add(T entity);
-        Task AddRange(IEnumerable<T> entities);
+        Task<bool> Any(Expression<Func<T, bool>> expression);
+        Task<T> Add(T entity);
+        Task<IEnumerable<T>> AddRange(IEnumerable<T> entities);
         Task Update(T entity);
         Task Remove(T entity);
         Task RemoveRange(IEnumerable<T> entities);

@@ -9,7 +9,7 @@ namespace Core.Repositories
 {
     public interface IGenericRepository<T> where T:class,new()
     {
-        Task<IEnumerable<T>> GetAll();
+        IQueryable<T> GetAll();
         Task<T> GetById(int id);
         IQueryable<T> Where(Expression<Func<T, bool>> expression);
         IQueryable<T> Any(Expression<Func<T, bool>> expression);
