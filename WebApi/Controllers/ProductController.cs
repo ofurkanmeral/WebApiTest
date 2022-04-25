@@ -16,11 +16,23 @@ namespace WebApi.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IServices<Product> _service;
-        public ProductController(IMapper mapper, IServices<Product> service)
+        private readonly IProductService _productService;
+        public ProductController(IProductService productService,IMapper mapper, IServices<Product> service)
         {
             _service = service;
             _mapper = mapper;
+            _productService = productService;
         }
+
+        //GET  api/product/GetProductsWithCategory
+        //[HttpGet("GetProductsWithCategory")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetProductsWithCategory()
+        {
+            return CreateActionResult(await _productService.GetProductWithCategory());
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

@@ -42,6 +42,12 @@ namespace WebApi
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IServices<>), typeof(Service<>));
 
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
+
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+
             services.AddDbContext<DataContext>(x =>
             {
                 x.UseSqlServer(Configuration.GetConnectionString("SqlConnection"), option =>
