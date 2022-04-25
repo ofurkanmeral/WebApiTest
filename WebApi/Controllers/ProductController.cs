@@ -35,6 +35,29 @@ namespace WebApi.Controllers
             var productDto = _mapper.Map<ProductDto>(product);
             return CreateActionResult(CustomResponseDto<ProductDto>.Success(200, productDto));
         }
-        
+        [HttpPost]
+        public async Task<IActionResult>Create(ProductDto productDto)
+        {
+            var products = _mapper.Map<Product>(productDto);
+            var result = await _service.Add(products);
+            return CreateActionResult(CustomResponseDto<ProductDto>.Success(201,productDto));
+        }
+        [HttpPut]
+        public async Task<IActionResult>Update(ProductDto productDto)
+        {
+            await _service.Update(_mapper.Map<Product>(productDto));
+            return CreateActionResult(CustomResponseDto<NoContentResult>.Success(204));
+        }
+        [HttpDelete("id")]
+        public async Task<IActionResult>Remove(int id)
+        {
+            var product = await _service.GetById(id);
+            if (product == null)
+            {
+                return CreateActionResult(CustomResponseDto<NoContentResult>.Fail(404, "İlgili product bulunamadı"));
+            }
+            await _service.Remove(product);
+            return CreateActionResult(CustomResponseDto<NoContentResult>.Success(204));
+        }
     }
 }
