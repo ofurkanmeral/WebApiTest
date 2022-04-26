@@ -1,6 +1,7 @@
 using Core.Repositories;
 using Core.Services;
 using Core.UnitOfWork;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,11 +17,14 @@ using Repository.Repositories;
 using Repository.UnitOfWork;
 using Service.Mapping;
 using Service.Services;
+using Service.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using WebApi.Filters;
+using WebApi.MiddleWares;
 
 namespace WebApi
 {
@@ -37,7 +41,16 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers(opt=> {
+                opt.Filters.Add(new ValidateFilterAttribute());
+            })
+                .AddFluentValidation(x=>x.RegisterValidatorsFromAssemblyContaining<ProductValidator>());
+
+            services.Configure<ApiBehaviorOptions>(op =>
+            {
+                op.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IServices<>), typeof(Service<>));
@@ -80,6 +93,8 @@ namespace WebApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCustomException();
 
             app.UseAuthorization();
 
